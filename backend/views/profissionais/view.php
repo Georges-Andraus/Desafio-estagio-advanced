@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'nascimento',
             'email:email',
             'status',
-            'clinicas.nome',
             
         ],
     ]) ?>
@@ -47,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($model->clinicas as $clinicas): ?>
             <li>
                 <?= Html::encode($clinicas->nome) ?>
-                <?= Html::a('Excluir', ['profissional/delete-clinica', 'id' => $model->id, 'clinica_id' => $clinica->id], [
+                <?= Html::a('Excluir', ['profissional/delete-clinica', 'id' => $model->id, 'clinica_id' => $clinicas->id], [
                     'class' => 'btn btn-danger btn-xs',
                     'data' => [
                         'confirm' => 'Você tem certeza que deseja excluir esta clínica associada a este profissional?',
