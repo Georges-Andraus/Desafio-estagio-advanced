@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Profissionais;
 use backend\models\ProfissionaisSearch;
+use backend\models\ProfissionaisClinicas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,12 +70,16 @@ class ProfissionaisController extends Controller
     {
         $model = new Profissionais();
 
+        $post = $this->request->post();
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                $modelClinicas = new ProfissionaisClinicas();
-                $modelClinicas->profissionais_id = $model->id;
-                $modelClinicas->clinicas_id = $model->id;
-                $modelClinica -> save();
+                foreach ($post['Profissionais']['clinicas'] as $clinica) {
+                    $modelClinicas = new ProfissionaisClinicas();
+                    $modelClinicas->profissional_id = $model->id;
+                    $modelClinicas->clinica_id = $clinica;
+                    $modelClinicas->save();
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
 
             }
