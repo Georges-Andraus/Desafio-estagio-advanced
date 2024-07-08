@@ -34,8 +34,11 @@ class Profissionais extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['conselho', 'nome', 'numero_conselho', 'nascimento', 'email', 'status'], 'required'],
-            [['conselho', 'status'], 'string'],
+            [['conselho', 'nome', 'numero_conselho', 'nascimento', 'email', 'ativo'], 'required'],
+            [['conselho', 'ativo'], 'string'],
+            [['numero_conselho'], 'unique', 'message' => 'Já existe um registro com esse valor.'],
+            [['email'], 'unique', 'message' => 'Já existe um email registro com esse valor.', 'targetAttribute' => ['email']],
+            [['email'], 'email'],
             ['nascimento', 'date', 'format' => 'php:Y-m-d'],
             [['nome', 'email'], 'string', 'max' => 255],
             [['numero_conselho'], 'string', 'max' => 20],
@@ -55,7 +58,7 @@ class Profissionais extends \yii\db\ActiveRecord
             'numero_conselho' => 'Numero Conselho',
             'nascimento' => 'Nascimento',
             'email' => 'Email',
-            'status' => 'Status',
+            'ativo' => 'Ativo',
         ];
     }
 

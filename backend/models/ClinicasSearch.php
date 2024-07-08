@@ -11,6 +11,7 @@ use backend\models\Clinicas;
  */
 class ClinicasSearch extends Clinicas
 {
+    public $clinicaNome;
     /**
      * {@inheritdoc}
      */
@@ -63,6 +64,7 @@ class ClinicasSearch extends Clinicas
 
         $query->andFilterWhere(['like', 'nome', $this->nome])
             ->andFilterWhere(['like', 'cnpj', $this->cnpj]);
+            
 
         return $dataProvider;
     }

@@ -11,6 +11,7 @@ use backend\models\Profissionais;
  */
 class ProfissionaisSearch extends Profissionais
 {
+    public $clinicaNome;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class ProfissionaisSearch extends Profissionais
     {
         return [
             [['id'], 'integer'],
-            [['conselho', 'nome', 'numero_conselho', 'nascimento', 'email', 'status'], 'safe'],
+            [['conselho', 'nome', 'numero_conselho', 'nascimento', 'email', 'ativo', 'clinicaNome'], 'safe'],
         ];
     }
 
@@ -42,6 +43,7 @@ class ProfissionaisSearch extends Profissionais
     {
         $query = Profissionais::find();
 
+        $query->joinWith(['clinicas']);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -56,6 +58,10 @@ class ProfissionaisSearch extends Profissionais
             return $dataProvider;
         }
 
+        $dataProvider->sort->attributes['Clinicas'] = [
+			'asc' => ['clinicas.nome' => SORT_ASC],
+			'desc' => ['clinicas.nome' => SORT_DESC],
+        ];
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -66,7 +72,9 @@ class ProfissionaisSearch extends Profissionais
             ->andFilterWhere(['like', 'nome', $this->nome])
             ->andFilterWhere(['like', 'numero_conselho', $this->numero_conselho])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'ativo', $this->ativo])
+            ->andFilterWhere(['like', 'clinicas.nome', $this->clinicaNome]);
+            
 
         return $dataProvider;
     }

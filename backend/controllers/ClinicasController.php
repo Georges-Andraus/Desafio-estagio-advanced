@@ -7,6 +7,7 @@ use backend\models\ClinicasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ClinicasController implements the CRUD actions for Clinicas model.
@@ -21,6 +22,16 @@ class ClinicasController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'acess' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['create', 'update', 'delete','view'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],  
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

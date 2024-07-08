@@ -8,6 +8,7 @@ use backend\models\ProfissionaisClinicas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ProfissionaisController implements the CRUD actions for Profissionais model.
@@ -22,6 +23,16 @@ class ProfissionaisController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+               'acess' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['create', 'update', 'delete','view'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ], 
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -74,11 +85,13 @@ class ProfissionaisController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                foreach ($post['Profissionais']['clinicas'] as $clinica) {
-                    $modelClinicas = new ProfissionaisClinicas();
-                    $modelClinicas->profissional_id = $model->id;
-                    $modelClinicas->clinica_id = $clinica;
-                    $modelClinicas->save();
+                if (!empty($post['Profissionais']['clinicas'])) {
+                    foreach ($post['Profissionais']['clinicas'] as $clinica) {
+                        $modelClinicas = new ProfissionaisClinicas();
+                        $modelClinicas->profissional_id = $model->id;
+                        $modelClinicas->clinica_id = $clinica;
+                        $modelClinicas->save();
+                    }
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
 
@@ -102,8 +115,18 @@ class ProfissionaisController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $post = $this->request->post();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            if (!empty($post['Profissionais']['clinicas'])) {
+                ProfissionaisClinicas::deleteAll(['profissional_id' => $model->id]);
+                foreach ($post['Profissionais']['clinicas'] as $clinica) {
+                    $modelClinicas = new ProfissionaisClinicas();
+                    $modelClinicas->profissional_id = $model->id;
+                    $modelClinicas->clinica_id = $clinica;
+                    $modelClinicas->save();
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -120,7 +143,7 @@ class ProfissionaisController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
+    { 
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

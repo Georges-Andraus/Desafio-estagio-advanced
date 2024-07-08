@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'numero_conselho',
             'nascimento',
             'email:email',
-            'status',
+            'ativo',
             
         ],
     ]) ?>
@@ -43,10 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <h2>Clínicas Associadas</h2>
     <ul>
-        <?php foreach ($model->clinicas as $clinicas): ?>
+        <?php foreach ($model->clinicas as $clinica): ?>
             <li>
-                <?= Html::encode($clinicas->nome) ?>
-                <?= Html::a('Excluir', ['profissional/delete-clinica', 'id' => $model->id, 'clinica_id' => $clinicas->id], [
+                <?= Html::encode($clinica->nome) ?>
+                <?= Html::a('Excluir', ['profissionais-clinicas/delete', 'id' => $model->id, 'clinica_id' => $clinica->id], [
                     'class' => 'btn btn-danger btn-xs',
                     'data' => [
                         'confirm' => 'Você tem certeza que deseja excluir esta clínica associada a este profissional?',
