@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = 'Home';
 ?>
 <div class="site-index">
 
@@ -11,9 +11,12 @@ $this->title = 'My Yii Application';
 
         <p class="lead">O melhor site de cadastro do mercado</p>
 
-        <p><a class="btn btn-lg btn-custom" href="index.php?r=profissionais%2Fcreate">Cadastrar profissional</a></p>
+        <p><a class="btn btn-lg btn-custom" href="index.php?r=profissionais">Cadastrar profissional</a></p>
     </div>
 
+
+
+    
     <style>
 
 .btn-custom {
