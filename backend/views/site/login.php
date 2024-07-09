@@ -27,6 +27,10 @@ $this->title = 'Login';
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
             </div>
 
+            <div class="text-center">
+                <?= Html::a('Sign Up', ['site/signup']) ?>
+            </div>
+
         <?php ActiveForm::end(); ?>
     </div>
 </div>
